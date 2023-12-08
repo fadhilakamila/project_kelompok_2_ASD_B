@@ -5,6 +5,7 @@ public class Main {
         // Membuat object tree
         BinaryTree binaryTree = new BinaryTree();
 
+        // === CARA 1 ===
         // Membuat node yang membawa value
         Node empat = new Node(4);
         Node tujuh = new Node(7);
@@ -18,6 +19,14 @@ public class Main {
         binaryTree.add(lima);
         binaryTree.add(satu);
         binaryTree.add(sepuluh);
+
+        // === CARA 2 ===
+        // Membuat node sekaligus memasukkan ke dalam tree
+//        binaryTree.root = new Node(1);
+//        binaryTree.root.left = new Node(2);
+//        binaryTree.root.right = new Node(3);
+//        binaryTree.root.left.left = new Node(4);
+//        binaryTree.root.left.right = new Node(5);
 
         System.out.println("=== Pengecekan Node dalam Tree ===");
         // nge-cek siapa root-nya
@@ -35,7 +44,7 @@ public class Main {
         System.out.println();
 
         System.out.println("=== Traversal Tree Data Structure dengan Algoritma Depth First Search (DFS) ===");
-        System.out.println("Hasil Inorder traversal\t:");
+        System.out.println("Hasil Inorder traversal\t\t:");
         binaryTree.printInorder(binaryTree.root);
 
         System.out.println("\nHasil Preorder traversal\t:");
