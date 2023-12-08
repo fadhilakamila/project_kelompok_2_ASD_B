@@ -6,6 +6,7 @@ public class BinaryTree {
     public void add(Node node) {
         root = addRecursive(root, node);
     }
+
     public Node addRecursive(Node current, Node node) {
         if (current == null) {
             return node;
