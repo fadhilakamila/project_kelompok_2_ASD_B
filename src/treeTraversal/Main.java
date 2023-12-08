@@ -28,8 +28,14 @@ public class Main {
 
         System.out.println(binaryTree.root.right.left.value);
 
+        //InOrder
         System.out.println("Inorder traversal of binary tree is");
         binaryTree.printInorder(binaryTree.root);
+
+        // PostOrder
+        System.out.println("Postorder traversal of binary tree is ");
+        binaryTree.printPostorder(binaryTree.root);
+
 
 
     }
