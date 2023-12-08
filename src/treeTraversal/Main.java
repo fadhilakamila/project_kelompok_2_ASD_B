@@ -2,6 +2,9 @@ package treeTraversal;
 
 public class Main {
     public static void main(String[] args) {
+
+        System.out.println("nyoba1");
+
         BinaryTree binaryTree = new BinaryTree();
 
         Node empat = new Node(4);
