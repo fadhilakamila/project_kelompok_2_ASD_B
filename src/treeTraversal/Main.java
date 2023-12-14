@@ -5,6 +5,8 @@ public class Main {
         // Membuat object tree
         BinaryTree binaryTree = new BinaryTree();
 
+        //HALOOOOO AGUNG 
+        
         // === CARA 1 ===
         // Membuat node yang membawa value
         Node empat = new Node(4);
