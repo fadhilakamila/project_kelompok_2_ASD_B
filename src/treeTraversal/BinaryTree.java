@@ -3,15 +3,13 @@ package treeTraversal;
 public class BinaryTree {
     Node root;
 
-    // Menambahkan node ke dalam tree
     public void add(Node node) {
         root = addRecursive(root, node);
     }
 
-    // posisi current (root setiap level) dibandingkan dengan yang mau dimasukkan. Node di parameter tsb adalah node yang mau dimasukin
-    public Node addRecursive(Node current, Node node) { // method untuk membuat tree baru
+    public Node addRecursive(Node current, Node node) {
         if (current == null) {
-            return node; // node di sini dimasukkan ke dalam root di line 8
+            return node;
         } else if (current.value > node.value) {
             current.left = addRecursive(current.left, node);
         } else if (current.value < node.value) {
@@ -25,11 +23,34 @@ public class BinaryTree {
     public void printInorder(Node node) {
         if (node == null)
             return;
-
+        // Traverse left
         printInorder(node.left);
-
+        // Traverse root
         System.out.print(node.value + " ");
-
+        // Traverse right
         printInorder(node.right);
     }
+    public void printPreorder(Node node) {
+        if (node == null)
+            return;
+        // Traverse root
+        System.out.print(node.value + " ");
+        // Traverse left
+        printPreorder(node.left);
+        // Traverse right
+        printPreorder(node.right);
+    }
+
+    public void printPostorder(Node node){
+        if (node == null)
+            return;
+
+        // Traverse left
+        printPostorder(node.left);
+        // Traverse right
+        printPostorder(node.right);
+        // Traverse root
+        System.out.print(node.value + " ");
+    }
+
 }
