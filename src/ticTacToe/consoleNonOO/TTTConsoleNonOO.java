@@ -89,7 +89,6 @@ public class TTTConsoleNonOO {
                         + ") is not valid. Try again...");
             }
         } while (!validInput);  // repeat if input is invalid
-
         System.out.println("Halo thifah");
     }
 
