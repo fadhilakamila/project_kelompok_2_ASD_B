@@ -1,62 +1,82 @@
 package sudoku;
-/**
- * The Sudoku number puzzle to be solved
- */
-public class Puzzle {
-    // All variables have package access
-    // The numbers on the puzzle
-    int[][] numbers = new int[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
-    // The clues - isGiven (no need to guess) or need to guess
-    boolean[][] isGiven = new boolean[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+import java.util.Collections;
+import java.util.Random;
+import java.util.Arrays;
 
-    // Constructor
+public class Puzzle {
+    int[][] numbers = new int[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+    boolean[][] isGiven = new boolean[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
+    private Random random = new Random();
+
     public Puzzle() {
         super();
     }
 
-    // Generate a new puzzle given the number of cells to be guessed, which can be used
-    //  to control the difficulty level.
-    // This method shall set (or update) the arrays numbers and isGiven
     public void newPuzzle(int cellsToGuess) {
-        // I hardcode a puzzle here for illustration and testing.
-        int[][] hardcodedNumbers =
-                {{5, 3, 4, 6, 7, 8, 9, 1, 2},
-                {6, 7, 2, 1, 9, 5, 3, 4, 8},
-                {1, 9, 8, 3, 4, 2, 5, 6, 7},
-                {8, 5, 9, 7, 6, 1, 4, 2, 3},
-                {4, 2, 6, 8, 5, 3, 7, 9, 1},
-                {7, 1, 3, 9, 2, 4, 8, 5, 6},
-                {9, 6, 1, 5, 3, 7, 2, 8, 4},
-                {2, 8, 7, 4, 1, 9, 6, 3, 5},
-                {3, 4, 5, 2, 8, 6, 1, 7, 9}};
+        resetBoard();
+        if (generateSudokuGrid(0, 0)) {
+            setClues(cellsToGuess);
+        } else {
+            // Jika papan tidak bisa dihasilkan, berikan pesan error atau tindakan yang sesuai
+            System.out.println("Error: Unable to generate a valid Sudoku puzzle.");
+        }
+    }
 
-        // Copy from hardcodedNumbers into the array "numbers"
-        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
-            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
-                numbers[row][col] = hardcodedNumbers[row][col];
+    private boolean generateSudokuGrid(int row, int col) {
+        if (row == SudokuConstants.GRID_SIZE) {
+            row = 0;
+            if (++col == SudokuConstants.GRID_SIZE) {
+                return true;
             }
         }
 
-        // Need to use input parameter cellsToGuess!
-        // Hardcoded for testing, only 2 cells of "8" is NOT GIVEN
-        boolean[][] hardcodedIsGiven =
-                {{true, true, true, true, true, false, true, true, true},
-                        {true, true, true, true, true, true, true, true, false},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true},
-                        {true, true, true, true, true, true, true, true, true}};
+        Integer[] nums = new Integer[SudokuConstants.GRID_SIZE];
+        for (int i = 0; i < nums.length; i++) {
+            nums[i] = i + 1;
+        }
+        Collections.shuffle(Arrays.asList(nums), random);
 
-        // Copy from hardcodedIsGiven into array "isGiven"
-        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
-            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
-                isGiven[row][col] = hardcodedIsGiven[row][col];
+        for (int num : nums) {
+            if (isValidPlacement(row, col, num)) {
+                numbers[row][col] = num;
+                if (generateSudokuGrid(row + 1, col)) {
+                    return true;
+                }
+            }
+        }
+
+        numbers[row][col] = 0; // reset on backtrack
+        return false;
+    }
+
+    private boolean isValidPlacement(int row, int col, int num) {
+        for (int i = 0; i < SudokuConstants.GRID_SIZE; i++) {
+            if (numbers[row][i] == num || numbers[i][col] == num ||
+                    numbers[row - row % 3 + i / 3][col - col % 3 + i % 3] == num) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void setClues(int cellsToGuess) {
+        for (int i = 0; i < SudokuConstants.GRID_SIZE * SudokuConstants.GRID_SIZE - cellsToGuess; ) {
+            int row = random.nextInt(SudokuConstants.GRID_SIZE);
+            int col = random.nextInt(SudokuConstants.GRID_SIZE);
+
+            if (!isGiven[row][col]) {
+                isGiven[row][col] = true;
+                i++;
             }
         }
     }
 
-    //(For advanced students) use singleton design pattern for this class
+    private void resetBoard() {
+        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+                numbers[row][col] = 0; // Reset angka
+                isGiven[row][col] = false; // Reset status petunjuk
+            }
+        }
+    }
 }
