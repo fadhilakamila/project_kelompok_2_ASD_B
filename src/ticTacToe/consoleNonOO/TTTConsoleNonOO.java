@@ -55,7 +55,7 @@ public class TTTConsoleNonOO {
             currentPlayer = (currentPlayer == NOUGHT) ? CROSS : NOUGHT;
         } while (currentState == PLAYING); // repeat if not game over
     }
-//
+////
     /** Initialize the board[][], currentState and currentPlayer for a new game*/
     public static void initGame() {
         for (int row = 0; row < ROWS; ++row) {
