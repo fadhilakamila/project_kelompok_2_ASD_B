@@ -14,12 +14,6 @@ package ticTacToe.consoleOO;
 public enum Seed {   // to save as "Seed.java"
     CROSS("X"), NOUGHT("O"), NO_SEED(" ");
 
-//    private Seed currentPlayer;  // declare variable currentPlayer as an instance of enum Seed
-//    currentPlayer = Seed.CROSS;  // assign a value (an enum item) to the variable currentPlayer
-//
-//    private Seed content;        // cell's content
-//    content = Seed.NO_SEED;
-
     // Private variable
     private String icon;
     // Constructor (must be private)
