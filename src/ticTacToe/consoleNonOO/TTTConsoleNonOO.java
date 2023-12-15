@@ -52,7 +52,7 @@ public class TTTConsoleNonOO {
                 System.out.println("It's a Draw!\nBye!");
             }
             // Switch currentPlayer
-            currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
+            currentPlayer = (currentPlayer == NOUGHT) ? CROSS : NOUGHT;
         } while (currentState == PLAYING); // repeat if not game over
     }
 
@@ -63,7 +63,7 @@ public class TTTConsoleNonOO {
                 board[row][col] = NO_SEED;  // all cells empty
             }
         }
-        currentPlayer = CROSS;   // cross plays first
+        currentPlayer = NOUGHT;   // cross plays first
         currentState  = PLAYING; // ready to play
     }
 
