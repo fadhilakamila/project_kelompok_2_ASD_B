@@ -1,10 +1,23 @@
 package sudoku;
 import java.awt.*;
 import javax.swing.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 /**
  * The main Sudoku program
  */
 public class SudokuMain extends JFrame {
+    /** The entry main() entry method */
+    public static void main(String[] args) {
+        // [TODO 1] Check "Swing program template" on how to run
+        //  the constructor of "SudokuMain"
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new SudokuMain(); // Create an instance of SudokuMain
+            }
+        });
+    }
     private static final long serialVersionUID = 1L;  // to prevent serial warning
 
     // private variables
@@ -19,7 +32,15 @@ public class SudokuMain extends JFrame {
         cp.add(board, BorderLayout.CENTER);
 
         // Add a button to the south to re-start the game via board.newGame()
-        // ......
+        JButton btnNewGame = new JButton("New Game");
+        btnNewGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                board.newGame();  // Call newGame() on the board to restart the game
+            }
+        });
+        // Add the button to the south of the BorderLayout
+        cp.add(btnNewGame, BorderLayout.SOUTH);
 
         // Initialize the game board to start the game
         board.newGame();
@@ -30,10 +51,4 @@ public class SudokuMain extends JFrame {
         setVisible(true);
     }
 
-    /** The entry main() entry method */
-    public static void main(String[] args) {
-        // [TODO 1] Check "Swing program template" on how to run
-        //  the constructor of "SudokuMain"
-        // .........
-    }
 }

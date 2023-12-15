@@ -54,8 +54,6 @@ public class TTTConsoleNonOO {
             // Switch currentPlayer
             currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
         } while (currentState == PLAYING); // repeat if not game over
-
-        System.out.println("Halo thifah");
     }
 
     /** Initialize the board[][], currentState and currentPlayer for a new game*/
