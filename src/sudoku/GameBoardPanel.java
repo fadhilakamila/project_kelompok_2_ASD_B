@@ -139,4 +139,16 @@ public class GameBoardPanel extends JPanel {
         this.levelOptions = levelOptions;
     }
 
+//    void showHints() {
+//        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+//            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+//                Cell cell = cells[row][col];
+//                if (cell.status == CellStatus.TO_GUESS) {
+//                    // Jika sel belum diisi (TO_GUESS), sorot sel tersebut
+//                    cell.setBackground(Color.CYAN); // Ganti warna sesuai kebutuhan
+//                }
+//            }
+//        }
+//    }
+
 }
