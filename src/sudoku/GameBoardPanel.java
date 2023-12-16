@@ -22,6 +22,8 @@ public class GameBoardPanel extends JPanel {
      */
     private Puzzle puzzle = new Puzzle();
 
+    private int levelOptions = 0;
+
     /**
      * Constructor
      */
@@ -59,7 +61,7 @@ public class GameBoardPanel extends JPanel {
      */
     public void newGame() {
         // Generate a new puzzle
-        puzzle.newPuzzle(10);
+        puzzle.newPuzzle(levelOptions);
 
         // Initialize all the 9x9 cells, based on the puzzle.
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -131,6 +133,10 @@ public class GameBoardPanel extends JPanel {
                 }
             }
         }
+    }
+
+    public void setLevel(int LevelOptions) {
+
     }
 
 }
