@@ -11,6 +11,9 @@ public class Puzzle {
     int[][] numbers = new int[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
     boolean[][] isGiven = new boolean[SudokuConstants.GRID_SIZE][SudokuConstants.GRID_SIZE];
     private Random random = new Random();
+    Scanner scEasy = new Scanner(Puzzle.class.getResourceAsStream("easy.txt"));
+    Scanner scMedium = new Scanner(Puzzle.class.getResourceAsStream("medium.txt"));
+    Scanner scHard = new Scanner(Puzzle.class.getResourceAsStream("hard.txt"));
 
     public Puzzle() {
         super();
@@ -21,34 +24,31 @@ public class Puzzle {
         int num = 0;
         if (generateSudokuGrid(0, 0)) {
             if (levelOptions == 0) {
-                Scanner sc = new Scanner(Puzzle.class.getResourceAsStream("easy.txt"));
-                if (sc.hasNext()) {
-                    String puzzle = sc.nextLine();
+                if (scEasy.hasNext()) {
+                    String puzzle = scEasy.nextLine();
                     for(int i = 0; i < 9; i++){
                         for(int j = 0; j < 9; j++){
-                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) == 0)isGiven[i][j] = false;
+                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
                     }
                 }
             } else if (levelOptions == 1) {
-                Scanner sc = new Scanner(Puzzle.class.getResourceAsStream("medium.txt"));
-                if (sc.hasNext()) {
-                    String puzzle = sc.nextLine();
+                if (scMedium.hasNext()) {
+                    String puzzle = scMedium.nextLine();
                     for(int i = 0; i < 9; i++){
                         for(int j = 0; j < 9; j++){
-                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) == 0)isGiven[i][j] = false;
+                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
                     }
                 }
             } else if (levelOptions == 2) {
-                Scanner sc = new Scanner(Puzzle.class.getResourceAsStream("hard.txt"));
-                if (sc.hasNext()) {
-                    String puzzle = sc.nextLine();
+                if (scHard.hasNext()) {
+                    String puzzle = scHard.nextLine();
                     for(int i = 0; i < 9; i++){
                         for(int j = 0; j < 9; j++){
-                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) == 0)isGiven[i][j] = false;
+                            if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
                     }

@@ -135,8 +135,8 @@ public class GameBoardPanel extends JPanel {
         }
     }
 
-    public void setLevel(int LevelOptions) {
-
+    public void setLevel(int levelOptions) {
+        this.levelOptions = levelOptions;
     }
 
 }
