@@ -59,7 +59,7 @@ public class GameBoardPanel extends JPanel {
      */
     public void newGame() {
         // Generate a new puzzle
-        puzzle.newPuzzle(2);
+        puzzle.newPuzzle(10);
 
         // Initialize all the 9x9 cells, based on the puzzle.
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -117,6 +117,18 @@ public class GameBoardPanel extends JPanel {
              */
             if (isSolved()) {
                 JOptionPane.showMessageDialog(GameBoardPanel.this, "Congratulations! You solved the puzzle!");
+            }
+        }
+    }
+
+    public void resetGame() {
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                if(cells[i][j].status == CellStatus.CORRECT_GUESS || cells[i][j].status == CellStatus.WRONG_GUESS) {
+                    cells[i][j].setText("");
+                    cells[i][j].status = CellStatus.TO_GUESS;
+                    cells[i][j].paint();
+                }
             }
         }
     }
