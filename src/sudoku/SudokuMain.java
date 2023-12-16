@@ -10,6 +10,7 @@ public class SudokuMain extends JFrame {
     private static final long serialVersionUID = 1L;  // to prevent serial warning
     // private variables
     GameBoardPanel board = new GameBoardPanel();
+    String[] levelOptions = {"Easy","Medium","Hard"};
 
     /** The entry main() entry method */
     public static void main(String[] args) {
@@ -35,6 +36,8 @@ public class SudokuMain extends JFrame {
         JMenu fileMenu = new JMenu("File");
         JMenu optionsMenu = new JMenu("Options");
         JMenu helpMenu = new JMenu("Help");
+        JComboBox cbLevelOptions = new JComboBox(levelOptions);
+
 
         btnNewGame.addActionListener(new ActionListener() {
             @Override
@@ -71,6 +74,16 @@ public class SudokuMain extends JFrame {
             }
         });
 
+        cbLevelOptions.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JComboBox cblevelOptions = (JComboBox) e.getSource();
+                int LevelOptions = cblevelOptions.getSelectedIndex();
+                board.setLevel(LevelOptions);
+                System.out.println(LevelOptions);
+            }
+        });
+
         // Menambahkan item ke menu "File"
         fileMenu.add(newGameItem);
         fileMenu.add(resetGameItem);
@@ -87,6 +100,7 @@ public class SudokuMain extends JFrame {
 
         panel.add(btnNewGame);
         panel.add(btnResetGame);
+        panel.add(cbLevelOptions);
         cp.add(panel, BorderLayout.SOUTH);
         cp.add(board, BorderLayout.CENTER);
 
@@ -98,5 +112,4 @@ public class SudokuMain extends JFrame {
         setTitle("Sudoku");
         setVisible(true);
     }
-    // LALA COBA 123
 }
