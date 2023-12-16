@@ -1,5 +1,7 @@
 package ticTacToe.consoleOO;
 
+import java.util.LinkedList;
+import java.util.ListIterator;
 /**
  * The Board class models the TTT game-board of 3x3 cells.
  */
@@ -11,6 +13,8 @@ public class Board {  // save as "Board.java"
     // Define properties (package-visible)
     /** A board composes of [ROWS]x[COLS] Cell instances */
     Cell[][] cells;
+    private LinkedList<Seed> players;
+    private ListIterator<Seed> currentPlayerIterator;
 
     /** Constructor to initialize the game board */
     public Board() {
@@ -26,6 +30,22 @@ public class Board {  // save as "Board.java"
                 cells[row][col] = new Cell(row, col);
             }
         }
+        // Initialize the linked list of players
+        players = new LinkedList<>();
+        players.add(Seed.CROSS);
+        players.add(Seed.NOUGHT);
+        // Initialize the iterator to the first player
+        currentPlayerIterator = players.listIterator();
+    }
+    public Seed getCurrentPlayer() {
+        return currentPlayerIterator.next();
+    }
+    public void switchPlayer() {
+        if (!currentPlayerIterator.hasNext()) {
+            // Reset to the first player if at the end of the list
+            currentPlayerIterator = players.listIterator();
+        }
+        currentPlayerIterator.next(); // Move to the next player
     }
 
     /** Reset the contents of the game board, ready for new game. */
@@ -47,22 +67,23 @@ public class Board {  // save as "Board.java"
         cells[selectedRow][selectedCol].content = player;
 
         // Compute and return the new game state
-        if (cells[selectedRow][0].content == player  // 3-in-the-row
+        if (cells[selectedRow][0].content == player
                 && cells[selectedRow][1].content == player
                 && cells[selectedRow][2].content == player
-                || cells[0][selectedCol].content == player // 3-in-the-column
+                || cells[0][selectedCol].content == player
                 && cells[1][selectedCol].content == player
                 && cells[2][selectedCol].content == player
-                || selectedRow == selectedCol         // 3-in-the-diagonal
+                || selectedRow == selectedCol
                 && cells[0][0].content == player
                 && cells[1][1].content == player
                 && cells[2][2].content == player
-                || selectedRow + selectedCol == 2     // 3-in-the-opposite-diagonal
+                || selectedRow + selectedCol == 2
                 && cells[0][2].content == player
                 && cells[1][1].content == player
                 && cells[2][0].content == player) {
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else {
+            switchPlayer();
             // Nobody win. Check for DRAW (all cells occupied) or PLAYING.
             for (int row = 0; row < ROWS; ++row) {
                 for (int col = 0; col < COLS; ++col) {
