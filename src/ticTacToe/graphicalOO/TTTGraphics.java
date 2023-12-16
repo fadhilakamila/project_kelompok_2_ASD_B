@@ -55,16 +55,45 @@ public class TTTGraphics extends JFrame {
     // Garis Pemenang
     private int[] winningLineStart;
     private int[] winningLineEnd;
+    private ScorePanel scorePanel;
 
     /** Constructor to setup the game and the GUI components */
     public TTTGraphics() {
         // Initialize the game objects
         initGame();
 
+        // Set up content pane
+        Container cp = getContentPane();
+        cp.setLayout(new BorderLayout());
+
         // Set up GUI components
         gamePanel = new GamePanel();  // Construct a drawing canvas (a JPanel)
         gamePanel.setPreferredSize(new Dimension(BOARD_WIDTH, BOARD_HEIGHT));
 
+        // Setup the status bar (JLabel) to display status message
+        statusBar = new JLabel("       ");
+        statusBar.setFont(FONT_STATUS);
+        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
+        statusBar.setOpaque(true);
+        statusBar.setBackground(COLOR_BG_STATUS);
+
+        // Initialize scorePanel before using it
+        scorePanel = new ScorePanel();
+
+        // Create a panel for the status bar and score panel
+        JPanel bottomPanel = new JPanel(new GridLayout(1, 2));
+
+        // Add statusBar to the bottom panel
+        bottomPanel.add(statusBar);
+
+        // Add scorePanel to the bottom panel
+        bottomPanel.add(scorePanel);
+
+        // Tambahkan gamePanel di tengah
+        cp.add(gamePanel, BorderLayout.CENTER);
+
+        // Add the bottom panel to the PAGE_END
+        cp.add(bottomPanel, BorderLayout.PAGE_END);
         // The canvas (JPanel) fires a MouseEvent upon mouse-click
         gamePanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -91,26 +120,69 @@ public class TTTGraphics extends JFrame {
             }
         });
 
-        // Setup the status bar (JLabel) to display status message
-        statusBar = new JLabel("       ");
-        statusBar.setFont(FONT_STATUS);
-        statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
-        statusBar.setOpaque(true);
-        statusBar.setBackground(COLOR_BG_STATUS);
-
-        // Set up content pane
-        Container cp = getContentPane();
-        cp.setLayout(new BorderLayout());
-        cp.add(gamePanel, BorderLayout.CENTER);
-        cp.add(statusBar, BorderLayout.PAGE_END); // same as SOUTH
-
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        pack();  // pack all the components in this JFrame
+        pack();
         setTitle("Tic Tac Toe");
-        setVisible(true);  // show this JFrame
+        setVisible(true);
 
         newGame();
+        scorePanel.resetScores();
     }
+
+    class ScorePanel extends JPanel {
+        private JLabel playerXLabel;
+        private JLabel playerOLabel;
+
+        private int playerXScore;
+        private int playerOScore;
+
+        private static final int WINNING_THRESHOLD = 3; // Jumlah kemenangan yang diperlukan
+
+        public ScorePanel() {
+            setLayout(new FlowLayout());
+            playerXLabel = new JLabel("Player X: 0");
+            playerOLabel = new JLabel("Player O: 0");
+
+            add(playerXLabel);
+            add(playerOLabel);
+
+            resetScores();
+        }
+
+        public void increasePlayerXScore() {
+            playerXScore++;
+            updateScoreLabels();
+            checkForWinner();
+        }
+
+        public void increasePlayerOScore() {
+            playerOScore++;
+            updateScoreLabels();
+            checkForWinner();
+        }
+
+        private void updateScoreLabels() {
+            playerXLabel.setText("Player X: " + playerXScore);
+            playerOLabel.setText("Player O: " + playerOScore);
+        }
+
+        private void checkForWinner() {
+            if (playerXScore >= WINNING_THRESHOLD) {
+                JOptionPane.showMessageDialog(this, "Player X is the overall winner!");
+                resetScores();
+            } else if (playerOScore >= WINNING_THRESHOLD) {
+                JOptionPane.showMessageDialog(this, "Player O is the overall winner!");
+                resetScores();
+            }
+        }
+
+        public void resetScores() {
+            playerXScore = 0;
+            playerOScore = 0;
+            updateScoreLabels();
+        }
+    }
+
 
     /** Initialize the Game (run once) */
     public void initGame() {
@@ -126,6 +198,12 @@ public class TTTGraphics extends JFrame {
         }
         currentPlayer = Seed.CROSS;    // cross plays first
         currentState  = State.PLAYING; // ready to play
+        resetWinningLine();
+    }
+
+    private void resetWinningLine() {
+        winningLineStart = null;
+        winningLineEnd = null;
     }
 
     /**
@@ -144,6 +222,12 @@ public class TTTGraphics extends JFrame {
             // Menyimpan posisi pemenang untuk garis horizontal
             winningLineStart = new int[]{selectedRow, 0};
             winningLineEnd = new int[]{selectedRow, 2};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else if (board[0][selectedCol] == player
                 && board[1][selectedCol] == player
@@ -151,6 +235,12 @@ public class TTTGraphics extends JFrame {
             // Menyimpan posisi pemenang untuk garis vertikal
             winningLineStart = new int[]{0, selectedCol};
             winningLineEnd = new int[]{2, selectedCol};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else if (selectedRow == selectedCol &&
                 board[0][0] == player &&
@@ -159,6 +249,12 @@ public class TTTGraphics extends JFrame {
             // Menyimpan posisi pemenang untuk garis diagonal utama
             winningLineStart = new int[]{0, 0};
             winningLineEnd = new int[]{2, 2};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else if (selectedRow + selectedCol == 2 &&
                 board[0][2] == player &&
@@ -167,6 +263,12 @@ public class TTTGraphics extends JFrame {
             // Menyimpan posisi pemenang untuk garis diagonal kedua
             winningLineStart = new int[]{0, 2};
             winningLineEnd = new int[]{2, 0};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else {
             // Nobody win. Check for DRAW (all cells occupied) or PLAYING.
@@ -180,6 +282,8 @@ public class TTTGraphics extends JFrame {
             return State.DRAW; // no empty cell, it's a draw
         }
     }
+
+
 
     /**
      *  Inner class DrawCanvas (extends JPanel) used for custom graphics drawing.
@@ -229,7 +333,7 @@ public class TTTGraphics extends JFrame {
 
             // Draw the winning line if there is a winner
             if (winningLineStart != null && winningLineEnd != null) {
-                g2d.setColor(Color.RED);
+                g2d.setColor(Color.GREEN);
                 int x1 = winningLineStart[1] * CELL_SIZE + CELL_SIZE / 2;
                 int y1 = winningLineStart[0] * CELL_SIZE + CELL_SIZE / 2;
                 int x2 = winningLineEnd[1] * CELL_SIZE + CELL_SIZE / 2;
