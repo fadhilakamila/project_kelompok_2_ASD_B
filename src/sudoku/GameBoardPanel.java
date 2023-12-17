@@ -22,6 +22,8 @@ public class GameBoardPanel extends JPanel {
      */
     private Puzzle puzzle = new Puzzle();
 
+    private int levelOptions = 0;
+
     /**
      * Constructor
      */
@@ -59,7 +61,7 @@ public class GameBoardPanel extends JPanel {
      */
     public void newGame() {
         // Generate a new puzzle
-        puzzle.newPuzzle(10);
+        puzzle.newPuzzle(levelOptions);
 
         // Initialize all the 9x9 cells, based on the puzzle.
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
@@ -132,5 +134,21 @@ public class GameBoardPanel extends JPanel {
             }
         }
     }
+
+    public void setLevel(int levelOptions) {
+        this.levelOptions = levelOptions;
+    }
+
+//    void showHints() {
+//        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+//            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+//                Cell cell = cells[row][col];
+//                if (cell.status == CellStatus.TO_GUESS) {
+//                    // Jika sel belum diisi (TO_GUESS), sorot sel tersebut
+//                    cell.setBackground(Color.CYAN); // Ganti warna sesuai kebutuhan
+//                }
+//            }
+//        }
+//    }
 
 }

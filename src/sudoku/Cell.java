@@ -4,6 +4,8 @@ import java.awt.Font;
 import javax.swing.JTextField;
 import javax.swing.BorderFactory;
 import javax.swing.border.Border;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  * The Cell class model the cells of the Sudoku puzzle, by customizing (subclass)
@@ -44,6 +46,7 @@ public class Cell extends JTextField {
 
         super.setHorizontalAlignment(JTextField.CENTER);
         super.setFont(FONT_NUMBERS);
+        super.addKeyListener(new CellKeyListener());
 
         // Atur border cell
         setCellBorder(row, col);
@@ -51,15 +54,13 @@ public class Cell extends JTextField {
     }
 
     private void setCellBorder(int row, int col) {
-    int top = (row % 3 == 0) ? 2 : 1;
-    int left = (col % 3 == 0) ? 2 : 1;
-    int bottom = (row % 3 == 2) ? 2 : 1;
-    int right = (col % 3 == 2) ? 2 : 1;
+        int top = (row % 3 == 0) ? 2 : 1;
+        int left = (col % 3 == 0) ? 2 : 1;
+        int bottom = (row % 3 == 2) ? 2 : 1;
+        int right = (col % 3 == 2) ? 2 : 1;
 
-    setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
-}
-
-
+        setBorder(BorderFactory.createMatteBorder(top, left, bottom, right, Color.BLACK));
+    }
 
     /** Reset this cell for a new game, given the puzzle number and isGiven */
     public void newGame(int number, boolean isGiven) {
@@ -112,6 +113,42 @@ public class Cell extends JTextField {
 
         super.repaint(); // Memastikan update visual
     }
+    private class CellKeyListener implements KeyListener {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            // Mendapatkan karakter yang diketik
+            char inputChar = e.getKeyChar();
 
-    
+            // Memastikan bahwa karakter adalah digit antara 1 dan 9
+            if (Character.isDigit(inputChar) && inputChar >= '1' && inputChar <= '9') {
+                int numberIn = Character.getNumericValue(inputChar);
+                processInput(numberIn);
+            }
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            // Kosongkan implementasi jika tidak diperlukan
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            // Kosongkan implementasi jika tidak diperlukan
+        }
+    }
+    /** Mengolah input angka yang dimasukkan oleh pengguna */
+    private void processInput(int numberIn) {
+        if (status == CellStatus.GIVEN) {
+            // Jika sel adalah petunjuk, abaikan input pengguna
+            return;
+        }
+
+        // Memperbarui nilai sel dan status berdasarkan input pengguna
+        if (numberIn == number) {
+            status = CellStatus.CORRECT_GUESS;
+        } else {
+            status = CellStatus.WRONG_GUESS;
+        }
+        paint(); // Memperbarui tampilan sel
+    }
 }
