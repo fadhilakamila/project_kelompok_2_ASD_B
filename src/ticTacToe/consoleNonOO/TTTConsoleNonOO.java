@@ -37,25 +37,37 @@ public class TTTConsoleNonOO {
         String playerO = in.nextLine();
 
         // Initialize the board, currentState, and currentPlayer
-        initGame();
         // Play the game once
         do {
-            // currentPlayer makes a move
-            // Update board[selectedRow][selectedCol] and currentState
-            stepGame(playerX, playerO);
-            // Refresh the display
-            paintBoard();
-            // Print message if game over
-            if (currentState == CROSS_WON) {
-                System.out.println(playerX + " won!\nBye!");
-            } else if (currentState == NOUGHT_WON) {
-                System.out.println(playerO + " won!\nBye!");
-            } else if (currentState == DRAW) {
-                System.out.println("It's a Draw!\nBye!");
+            // Play the game once
+            initGame();
+            do {
+                // currentPlayer makes a move
+                // Update board[selectedRow][selectedCol] and currentState
+                stepGame(playerX, playerO);
+                // Refresh the display
+                paintBoard();
+                // Print message if game over
+                if (currentState == CROSS_WON) {
+                    System.out.println(playerX + " won!");
+                } else if (currentState == NOUGHT_WON) {
+                    System.out.println(playerO + " won!");
+                } else if (currentState == DRAW) {
+                    System.out.println("It's a Draw!");
+                }
+                // Switch currentPlayer
+                currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
+            } while (currentState == PLAYING); // repeat if not game over
+
+            // Prompt the user whether to play again
+            System.out.print("Play again (y/n)? ");
+            char ans = in.next().charAt(0);
+            if (ans != 'y' && ans != 'Y') {
+                System.out.println("Bye!");
+                System.exit(0);  // terminate the program
             }
-            // Switch currentPlayer
-            currentPlayer = (currentPlayer == CROSS) ? NOUGHT : CROSS;
-        } while (currentState == PLAYING); // repeat if not game over
+        } while (true);  // repeat until the user does not answer yes
+
     }
 
     /** Initialize the board[][], currentState, and currentPlayer for a new game*/
@@ -91,7 +103,7 @@ public class TTTConsoleNonOO {
                 System.out.println("This move at (" + (row + 1) + "," + (col + 1)
                         + ") is not valid. Try again...");
             }
-        } while (!validInput);
+        } while (!validInput); // repeat jika input invalid
     }
 
     /**
@@ -106,13 +118,10 @@ public class TTTConsoleNonOO {
         board[selectedRow][selectedCol] = player;
 
         // Compute and return the new game state
-        if (board[selectedRow][0] == player && board[selectedRow][1] == player && board[selectedRow][2] == player
-                || board[0][selectedCol] == player && board[1][selectedCol] == player
-                && board[2][selectedCol] == player
-                || selectedRow == selectedCol && board[0][0] == player && board[1][1] == player
-                && board[2][2] == player
-                || selectedRow + selectedCol == 2 && board[0][2] == player && board[1][1] == player
-                && board[2][0] == player) {
+        if (board[selectedRow][0] == player && board[selectedRow][1] == player && board[selectedRow][2] == player // simbol sama di baris 1
+                || board[0][selectedCol] == player && board[1][selectedCol] == player && board[2][selectedCol] == player // simbol sama di kolom 1
+                || selectedRow == selectedCol && board[0][0] == player && board[1][1] == player && board[2][2] == player // simbol sama di diagonal +
+                || selectedRow + selectedCol == 2 && board[0][2] == player && board[1][1] == player && board[2][0] == player) {  // simbol sama di diagonal -
             return (player == CROSS) ? CROSS_WON : NOUGHT_WON;
         } else {
             // Tidak ada yang menang. Periksa DRAW (seluruh sel terisi) atau masih PLAYING.
