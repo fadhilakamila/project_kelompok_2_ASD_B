@@ -104,6 +104,8 @@ public class Cell extends JTextField {
             case CORRECT_GUESS:
                 super.setEditable(true);
                 super.setBackground(BG_CORRECT_GUESS); // Atau warna lain yang cocok
+                super.setText(String.valueOf(number));
+                super.setEditable(false);
                 break;
             case WRONG_GUESS:
                 super.setEditable(true);
@@ -146,6 +148,7 @@ public class Cell extends JTextField {
         // Memperbarui nilai sel dan status berdasarkan input pengguna
         if (numberIn == number) {
             status = CellStatus.CORRECT_GUESS;
+//            setEditable(false);
         } else {
             status = CellStatus.WRONG_GUESS;
         }
