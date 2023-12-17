@@ -2,6 +2,7 @@ package sudoku;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.util.Random;
 
 public class GameBoardPanel extends JPanel {
     private static final long serialVersionUID = 1L;  // to prevent serial warning
@@ -23,6 +24,7 @@ public class GameBoardPanel extends JPanel {
     private Puzzle puzzle = new Puzzle();
 
     private int levelOptions = 0;
+    private Random random = new Random();
 
     /**
      * Constructor
@@ -139,16 +141,47 @@ public class GameBoardPanel extends JPanel {
         this.levelOptions = levelOptions;
     }
 
-//    void showHints() {
-//        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
-//            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
-//                Cell cell = cells[row][col];
-//                if (cell.status == CellStatus.TO_GUESS) {
-//                    // Jika sel belum diisi (TO_GUESS), sorot sel tersebut
-//                    cell.setBackground(Color.CYAN); // Ganti warna sesuai kebutuhan
-//                }
-//            }
-//        }
-//    }
+    public void solve() {
+        for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
+            for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
+                if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
+                    cells[row][col].status = CellStatus.CORRECT_GUESS;
+                    cells[row][col].setText(cells[row][col].number + "");
+                    cells[row][col].paint();
+                    if (isSolved()) {
+                        JOptionPane.showMessageDialog(GameBoardPanel.this, "The puzzle is solved");
+                    }
+                }
+            }
+        }
+    }
+    public void showHints() {
+        boolean hintGiven = false;
+        for (int i = 0; i < SudokuConstants.GRID_SIZE * SudokuConstants.GRID_SIZE - 1;) {
+            int row = random.nextInt(SudokuConstants.GRID_SIZE);
+            for (int j = 0; j < SudokuConstants.GRID_SIZE * SudokuConstants.GRID_SIZE - 1; ) {
+                int col = random.nextInt(SudokuConstants.GRID_SIZE);
+                if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
+                    cells[row][col].status = CellStatus.CORRECT_GUESS;
+                    cells[row][col].setText(cells[row][col].number + "");
+                    cells[row][col].paint();
+                    hintGiven = true;
+                    break;
+                }
+                j++;
+            }
+            if (hintGiven) break;
+            i++;
+        }
 
+//        int row = random.nextInt(SudokuConstants.GRID_SIZE-1);
+//        int col = random.nextInt(SudokuConstants.GRID_SIZE-1);
+//
+//        if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
+//            cells[row][col].status = CellStatus.CORRECT_GUESS;
+//            cells[row][col].setText(cells[row][col].number + "");
+//        } else {
+//            showHints();
+//        }
+    }
 }

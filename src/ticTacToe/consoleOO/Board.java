@@ -38,14 +38,16 @@ public class Board {  // save as "Board.java"
         currentPlayerIterator = players.listIterator();
     }
     public Seed getCurrentPlayer() {
-        return currentPlayerIterator.next();
-    }
-    public void switchPlayer() {
         if (!currentPlayerIterator.hasNext()) {
             // Reset to the first player if at the end of the list
             currentPlayerIterator = players.listIterator();
         }
-        currentPlayerIterator.next(); // Move to the next player
+        Seed currentPlayer = currentPlayerIterator.next(); // Move to the next player
+        currentPlayerIterator.previous(); // Move the iterator back one step
+        return currentPlayer;
+    }
+    public void switchPlayer() {
+        currentPlayerIterator = players.listIterator();
     }
 
     /** Reset the contents of the game board, ready for new game. */
@@ -158,6 +160,7 @@ public class Board {  // save as "Board.java"
 
         return false;  // No win
     }
+
 
     private boolean isBoardFull() {
         // Check if the board is full
