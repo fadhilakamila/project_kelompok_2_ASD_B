@@ -29,13 +29,14 @@ public class Cell extends JTextField {
 
     // Border khusus untuk grid 3x3
     private static final Border BLOCK_BORDER = BorderFactory.createMatteBorder(2, 2, 2, 2, Color.BLACK);
-    public static final Color COLOR_OFF_WHITE = new Color(247, 242, 237); // Off-White
-    public static final Color COLOR_WHITE = Color.white; // White
+    public static final Color COLOR_OFF_WHITE = new Color(247, 242, 237);
+    public static final Color COLOR_WHITE = Color.white;
 
 
     // Define properties (package-visible)
     int row, col;  // The row and column number [0-8] of this cell
     int number;    // The puzzle number [1-9] for this cell
+    int toGuessCount;
     CellStatus status;  // The status of this cell defined in enum CellStatus
 
     /** Constructor */
@@ -103,17 +104,17 @@ public class Cell extends JTextField {
                 break;
             case CORRECT_GUESS:
                 super.setEditable(true);
-                super.setBackground(BG_CORRECT_GUESS); // Atau warna lain yang cocok
+                super.setBackground(BG_CORRECT_GUESS);
                 super.setText(String.valueOf(number));
                 super.setEditable(false);
                 break;
             case WRONG_GUESS:
                 super.setEditable(true);
-                super.setBackground(BG_WRONG_GUESS); // Atau warna lain yang menandakan kesalahan
+                super.setBackground(BG_WRONG_GUESS);
                 break;
         }
 
-        super.repaint(); // Memastikan update visual
+        super.repaint(); // Memperbarui tampilan sel
     }
     private class CellKeyListener implements KeyListener {
         @Override
@@ -130,12 +131,10 @@ public class Cell extends JTextField {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            // Kosongkan implementasi jika tidak diperlukan
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            // Kosongkan implementasi jika tidak diperlukan
         }
     }
     /** Mengolah input angka yang dimasukkan oleh pengguna */
@@ -148,7 +147,6 @@ public class Cell extends JTextField {
         // Memperbarui nilai sel dan status berdasarkan input pengguna
         if (numberIn == number) {
             status = CellStatus.CORRECT_GUESS;
-//            setEditable(false);
         } else {
             status = CellStatus.WRONG_GUESS;
         }

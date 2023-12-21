@@ -1,9 +1,6 @@
 package ticTacToe.consoleOO;
 
 import java.util.Scanner;
-import static ticTacToe.consoleOO.Board.COLS;
-import static ticTacToe.consoleOO.Board.ROWS;
-import static ticTacToe.consoleOO.Seed.*;
 import static ticTacToe.consoleOO.State.*;
 
 /**

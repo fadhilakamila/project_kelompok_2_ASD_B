@@ -1,11 +1,9 @@
 package sudoku;
+
 import java.awt.*;
 import javax.swing.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import static java.awt.Color.*;
-import static javax.swing.JOptionPane.*;
-
 
 /**
  * The main Sudoku program
@@ -36,7 +34,9 @@ public class SudokuMain extends JFrame {
         JButton btnNewGame = new JButton("New Game");
         JButton btnResetGame = new JButton("Reset Game");
         JButton btnHints = new JButton("Hints");
-        btnHints.setBackground(yellow);
+        Color softYellow = new Color(255, 255, 117);
+        btnHints.setBackground(softYellow);
+        btnHints.setOpaque(true);
         JButton btnSolve = new JButton("Solve Itself");
         JPanel panel = new JPanel(new GridLayout());
         JMenuBar menuBar = new JMenuBar();
@@ -72,11 +72,11 @@ public class SudokuMain extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Panggil metode untuk menampilkan hint 1 cell
-                if (!board.isSolved() && hintCount<3) {
+                if (!board.isSolved() && hintCount<5) {
                     board.showHints();
                     hintCount++;
-                } else if (hintCount>=3) {
-                    JOptionPane.showMessageDialog(SudokuMain.this, "You reached the maximum hint");
+                } else if (hintCount>=5) {
+                    JOptionPane.showMessageDialog(SudokuMain.this, "You've reached the maximum hint");
                 }
             }
         });
@@ -112,7 +112,6 @@ public class SudokuMain extends JFrame {
                 int LevelOptions = cblevelOptions.getSelectedIndex();
                 board.setLevel(LevelOptions);
                 board.newGame();
-                System.out.println(LevelOptions);
             }
         });
 
@@ -141,7 +140,7 @@ public class SudokuMain extends JFrame {
         // Initialize the game board to start the game
         board.newGame();
 
-        pack();     // Pack the UI components, instead of using setSize()
+        pack(); // Pack the UI components, instead of using setSize()
         setLocationRelativeTo(null); // Menempatkan JFrame di tengah layar
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // to handle window-closing
         setTitle("Sudoku");

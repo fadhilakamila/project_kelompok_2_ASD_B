@@ -6,7 +6,7 @@ public class Cell {
      */
     // Define properties (package-visible)
     /** Content of this cell (CROSS, NOUGHT, NO_SEED) */
-    Seed content;
+    Seed content; // content adalah instance variabel method Cell()
     /** Row and column of this cell, not used in this program */
     int row, col;
 
