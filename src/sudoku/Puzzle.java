@@ -1,10 +1,8 @@
 package sudoku;
-import java.io.InputStream;
+
 import java.util.Collections;
 import java.util.Random;
 import java.util.Arrays;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class Puzzle {
@@ -26,8 +24,8 @@ public class Puzzle {
             if (levelOptions == 0) {
                 if (scEasy.hasNext()) {
                     String puzzle = scEasy.nextLine();
-                    for(int i = 0; i < 9; i++){
-                        for(int j = 0; j < 9; j++){
+                    for(int i = 0; i < SudokuConstants.GRID_SIZE; i++){
+                        for(int j = 0; j < SudokuConstants.GRID_SIZE; j++){
                             if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
@@ -36,8 +34,8 @@ public class Puzzle {
             } else if (levelOptions == 1) {
                 if (scMedium.hasNext()) {
                     String puzzle = scMedium.nextLine();
-                    for(int i = 0; i < 9; i++){
-                        for(int j = 0; j < 9; j++){
+                    for(int i = 0; i < SudokuConstants.GRID_SIZE; i++){
+                        for(int j = 0; j < SudokuConstants.GRID_SIZE; j++){
                             if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
@@ -46,8 +44,8 @@ public class Puzzle {
             } else if (levelOptions == 2) {
                 if (scHard.hasNext()) {
                     String puzzle = scHard.nextLine();
-                    for(int i = 0; i < 9; i++){
-                        for(int j = 0; j < 9; j++){
+                    for(int i = 0; i < SudokuConstants.GRID_SIZE; i++){
+                        for(int j = 0; j < SudokuConstants.GRID_SIZE; j++){
                             if(Integer.parseInt(String.valueOf(puzzle.charAt(num))) != 0) isGiven[i][j] = true;
                             num++;
                         }
@@ -61,6 +59,7 @@ public class Puzzle {
     }
 
     private boolean generateSudokuGrid(int row, int col) {
+        // base case
         if (row == SudokuConstants.GRID_SIZE) {
             row = 0;
             if (++col == SudokuConstants.GRID_SIZE) {
@@ -77,7 +76,7 @@ public class Puzzle {
         for (int num : nums) {
             if (isValidPlacement(row, col, num)) {
                 numbers[row][col] = num;
-                if (generateSudokuGrid(row + 1, col)) {
+                if (generateSudokuGrid(row + 1, col)) { // cek cell selanjutnya
                     return true;
                 }
             }
@@ -106,16 +105,4 @@ public class Puzzle {
             }
         }
     }
-
-//    private void setClues(int levelOptions) {
-//        for (int i = 0; i < SudokuConstants.GRID_SIZE * SudokuConstants.GRID_SIZE - cellsToGuess;) {
-//            int row = random.nextInt(SudokuConstants.GRID_SIZE);
-//            int col = random.nextInt(SudokuConstants.GRID_SIZE);
-//
-//            if (!isGiven[row][col]) {
-//                isGiven[row][col] = true;
-//                i++;
-//            }
-//        }
-//    }
 }

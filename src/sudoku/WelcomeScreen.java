@@ -41,7 +41,7 @@ public class WelcomeScreen extends JFrame {
         startButton.setFont(new Font("Helvetica Neue", Font.PLAIN, 18));
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.setBackground(new Color(0xFFFFFF)); // White background
-        startButton.setForeground(new Color(0x2E2E2E)); // Dark grey text
+        startButton.setForeground(new Color(0x654321)); // Dark grey text
         startButton.setBorder(BorderFactory.createCompoundBorder(
         BorderFactory.createLineBorder(new Color(0x654321), 2, true), // Brown border
         BorderFactory.createEmptyBorder(5, 15, 5, 15))); // Padding

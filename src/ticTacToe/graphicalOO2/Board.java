@@ -9,19 +9,24 @@ public class Board {
     public static final int ROWS = 3;  // ROWS x COLS cells
     public static final int COLS = 3;
     // Define named constants for drawing
-    public static final int CANVAS_WIDTH = Cell.SIZE * COLS;  // the drawing canvas
-    public static final int CANVAS_HEIGHT = Cell.SIZE * ROWS;
-    public static final int GRID_WIDTH = 8;  // Grid-line's width
+    public static final int BOARD_WIDTH = Cell.CELL_SIZE * COLS;  // the drawing canvas
+    public static final int BOARD_HEIGHT = Cell.CELL_SIZE * ROWS;
+    public static final int GRID_WIDTH = 5;  // Grid-line's width
     public static final int GRID_WIDHT_HALF = GRID_WIDTH / 2; // Grid-line's half-width
     public static final Color COLOR_GRID = Color.LIGHT_GRAY;  // grid lines
     public static final int Y_OFFSET = 1;  // Fine tune for better display
+    private ScorePanel scorePanel;
 
     // Define properties (package-visible)
     /** Composes of 2D array of ROWS-by-COLS Cell instances */
     Cell[][] cells;
+    public static int[] winningLineStart;
+    public static int[] winningLineEnd;
 
     /** Constructor to initialize the game board */
-    public Board() {
+    public Board(ScorePanel scorePanel) {
+        initGame();
+        this.scorePanel = scorePanel;
         initGame();
     }
 
@@ -56,20 +61,59 @@ public class Board {
         cells[selectedRow][selectedCol].content = player;
 
         // Compute and return the new game state
-        if (cells[selectedRow][0].content == player  // 3-in-the-row
+        if (cells[selectedRow][0].content == player
                 && cells[selectedRow][1].content == player
-                && cells[selectedRow][2].content == player
-                || cells[0][selectedCol].content == player // 3-in-the-column
+                && cells[selectedRow][2].content == player) {
+            // Menyimpan posisi pemenang untuk garis horizontal
+            winningLineStart = new int[]{selectedRow, 0};
+            winningLineEnd = new int[]{selectedRow, 2};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
+            return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
+        } else if (cells[0][selectedCol].content == player
                 && cells[1][selectedCol].content == player
-                && cells[2][selectedCol].content == player
-                || selectedRow == selectedCol     // 3-in-the-diagonal
-                && cells[0][0].content == player
-                && cells[1][1].content == player
-                && cells[2][2].content == player
-                || selectedRow + selectedCol == 2 // 3-in-the-opposite-diagonal
-                && cells[0][2].content == player
-                && cells[1][1].content == player
-                && cells[2][0].content == player) {
+                && cells[2][selectedCol].content == player) {
+            // Menyimpan posisi pemenang untuk garis vertikal
+            winningLineStart = new int[]{0, selectedCol};
+            winningLineEnd = new int[]{2, selectedCol};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
+            return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
+        } else if (selectedRow == selectedCol &&
+                cells[0][0].content == player &&
+                cells[1][1].content == player &&
+                cells[2][2].content == player) {
+            // Menyimpan posisi pemenang untuk garis diagonal utama
+            winningLineStart = new int[]{0, 0};
+            winningLineEnd = new int[]{2, 2};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
+            return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
+        } else if (selectedRow + selectedCol == 2 &&
+                cells[0][2].content == player &&
+                cells[1][1].content == player &&
+                cells[2][0].content == player) {
+            // Menyimpan posisi pemenang untuk garis diagonal kedua
+            winningLineStart = new int[]{0, 2};
+            winningLineEnd = new int[]{2, 0};
+            // Tambahkan skor jika ada pemenang
+            if (player == Seed.CROSS) {
+                scorePanel.increasePlayerXScore();
+            } else {
+                scorePanel.increasePlayerOScore();
+            }
             return (player == Seed.CROSS) ? State.CROSS_WON : State.NOUGHT_WON;
         } else {
             // Nobody win. Check for DRAW (all cells occupied) or PLAYING.
@@ -89,13 +133,13 @@ public class Board {
         // Draw the grid-lines
         g.setColor(COLOR_GRID);
         for (int row = 1; row < ROWS; ++row) {
-            g.fillRoundRect(0, Cell.SIZE * row - GRID_WIDHT_HALF,
-                    CANVAS_WIDTH - 1, GRID_WIDTH,
+            g.fillRoundRect(0, Cell.CELL_SIZE * row - GRID_WIDHT_HALF,
+                    BOARD_WIDTH - 1, GRID_WIDTH,
                     GRID_WIDTH, GRID_WIDTH);
         }
         for (int col = 1; col < COLS; ++col) {
-            g.fillRoundRect(Cell.SIZE * col - GRID_WIDHT_HALF, 0 + Y_OFFSET,
-                    GRID_WIDTH, CANVAS_HEIGHT - 1,
+            g.fillRoundRect(Cell.CELL_SIZE * col - GRID_WIDHT_HALF, 0 + Y_OFFSET,
+                    GRID_WIDTH, BOARD_HEIGHT - 1,
                     GRID_WIDTH, GRID_WIDTH);
         }
 

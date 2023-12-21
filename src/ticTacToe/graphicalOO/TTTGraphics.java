@@ -20,17 +20,18 @@ public class TTTGraphics extends JFrame {
     public static final int CELL_SIZE = 200; // cell width/height (square)
     public static final int BOARD_WIDTH  = CELL_SIZE * COLS; // the drawing canvas
     public static final int BOARD_HEIGHT = CELL_SIZE * ROWS;
-    public static final int GRID_WIDTH = 5;                  // Grid-line's width
+    public static final int GRID_WIDTH = 5; // Grid-line's width
     public static final int GRID_WIDTH_HALF = GRID_WIDTH / 2;
     // Symbols (cross/nought) are displayed inside a cell, with padding from border
     public static final int CELL_PADDING = CELL_SIZE / 5;
     public static final int SYMBOL_SIZE = CELL_SIZE - CELL_PADDING * 2; // width/height
     public static final int SYMBOL_STROKE_WIDTH = 10; // pen's stroke width
     public static final Color COLOR_BG = Color.black;  // background
-    public static final Color COLOR_BG_STATUS = new Color(255, 255, 255);
+    public static final Color COLOR_BG_STATUS = new Color(240, 240, 240);
     public static final Color COLOR_GRID   = Color.LIGHT_GRAY;  // grid lines
-    public static final Color COLOR_CROSS  = new Color(211, 158, 45);  // Red #D32D41
-    public static final Color COLOR_NOUGHT = new Color(87, 255, 240); // Blue #4CB5F5
+    public static final Color COLOR_CROSS  = new Color(158, 184, 217);  // Red #D32D41
+    public static final Color COLOR_NOUGHT = new Color(162, 87, 114); // Blue #4CB5F5
+    public static final Color COLOR_STATUS = new Color(0xBF3131);
     public static final Font FONT_STATUS = new Font("OCR A Extended", Font.PLAIN, 14);
 
     // This enum (inner class) contains the various states of the game
@@ -76,6 +77,8 @@ public class TTTGraphics extends JFrame {
         statusBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 12));
         statusBar.setOpaque(true);
         statusBar.setBackground(COLOR_BG_STATUS);
+        statusBar.setHorizontalAlignment(JLabel.LEFT);
+        statusBar.setPreferredSize(new Dimension(300, 30));
 
         // Initialize scorePanel before using it
         scorePanel = new ScorePanel();
@@ -141,8 +144,10 @@ public class TTTGraphics extends JFrame {
 
         public ScorePanel() {
             setLayout(new FlowLayout());
-            playerXLabel = new JLabel("Player X: 0");
+            playerXLabel = new JLabel("Player X: 0  | ");
             playerOLabel = new JLabel("Player O: 0");
+            playerOLabel.setFont(FONT_STATUS);
+            playerXLabel.setFont(FONT_STATUS);
 
             add(playerXLabel);
             add(playerOLabel);
@@ -163,16 +168,16 @@ public class TTTGraphics extends JFrame {
         }
 
         private void updateScoreLabels() {
-            playerXLabel.setText("Player X: " + playerXScore);
+            playerXLabel.setText("Player X: " + playerXScore + "  | ");
             playerOLabel.setText("Player O: " + playerOScore);
         }
 
         private void checkForWinner() {
             if (playerXScore >= WINNING_THRESHOLD) {
-                JOptionPane.showMessageDialog(this, "Player X is the overall winner!");
+                JOptionPane.showMessageDialog(null, "Player X is the overall winner!");
                 resetScores();
             } else if (playerOScore >= WINNING_THRESHOLD) {
-                JOptionPane.showMessageDialog(this, "Player O is the overall winner!");
+                JOptionPane.showMessageDialog(null, "Player O is the overall winner!");
                 resetScores();
             }
         }
@@ -284,8 +289,6 @@ public class TTTGraphics extends JFrame {
         }
     }
 
-
-
     /**
      *  Inner class DrawCanvas (extends JPanel) used for custom graphics drawing.
      */
@@ -347,13 +350,13 @@ public class TTTGraphics extends JFrame {
                 statusBar.setForeground(Color.BLACK);
                 statusBar.setText((currentPlayer == Seed.CROSS) ? "X's Turn" : "O's Turn");
             } else if (currentState == State.DRAW) {
-                statusBar.setForeground(Color.RED);
+                statusBar.setForeground(COLOR_STATUS);
                 statusBar.setText("It's a Draw! Click to play again");
             } else if (currentState == State.CROSS_WON) {
-                statusBar.setForeground(Color.RED);
+                statusBar.setForeground(COLOR_STATUS);
                 statusBar.setText("'X' Won! Click to play again");
             } else if (currentState == State.NOUGHT_WON) {
-                statusBar.setForeground(Color.RED);
+                statusBar.setForeground(COLOR_STATUS);
                 statusBar.setText("'O' Won! Click to play again");
             }
         }

@@ -25,7 +25,6 @@ public class GameBoardPanel extends JPanel {
 
     private int levelOptions = 0;
     private Random random = new Random();
-
     /**
      * Constructor
      */
@@ -40,8 +39,7 @@ public class GameBoardPanel extends JPanel {
             }
         }
 
-        // [TODO 3] Allocate a common listener as the ActionEvent listener for all the
-        //  Cells (JTextFields)
+        // [TODO 3] Allocate a common listener as the ActionEvent listener for all the Cells (JTextFields)
         CellInputListener listener = new CellInputListener();
 
 
@@ -72,7 +70,6 @@ public class GameBoardPanel extends JPanel {
             }
         }
     }
-
     /**
      * Return true if the puzzle is solved
      * i.e., none of the cell have status of TO_GUESS or WRONG_GUESS
@@ -89,7 +86,6 @@ public class GameBoardPanel extends JPanel {
     }
 
     // [TODO 2] Define a Listener Inner Class for all the editable Cells
-
     private class CellInputListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
@@ -126,8 +122,8 @@ public class GameBoardPanel extends JPanel {
     }
 
     public void resetGame() {
-        for(int i = 0; i < 9; i++){
-            for(int j = 0; j < 9; j++){
+        for(int i = 0; i < SudokuConstants.GRID_SIZE; i++){
+            for(int j = 0; j < SudokuConstants.GRID_SIZE; j++){
                 if(cells[i][j].status == CellStatus.CORRECT_GUESS || cells[i][j].status == CellStatus.WRONG_GUESS) {
                     cells[i][j].setText("");
                     cells[i][j].status = CellStatus.TO_GUESS;
@@ -145,8 +141,8 @@ public class GameBoardPanel extends JPanel {
         for (int row = 0; row < SudokuConstants.GRID_SIZE; ++row) {
             for (int col = 0; col < SudokuConstants.GRID_SIZE; ++col) {
                 if (cells[row][col].status == CellStatus.TO_GUESS || cells[row][col].status == CellStatus.WRONG_GUESS) {
-                    cells[row][col].status = CellStatus.CORRECT_GUESS;
                     cells[row][col].setText(cells[row][col].number + "");
+                    cells[row][col].status = CellStatus.CORRECT_GUESS;
                     cells[row][col].paint();
                     if (isSolved()) {
                         JOptionPane.showMessageDialog(GameBoardPanel.this, "The puzzle is solved");
